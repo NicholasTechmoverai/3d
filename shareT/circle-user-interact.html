@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive 3D Rotating Sphere</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #121212;
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+
+        .sphere-container {
+            perspective: 1500px;
+            width: 400px;
+            height: 400px;
+            cursor: grab;
+        }
+
+        .sphere {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateSphere 15s infinite linear;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+        }
+
+        .sphere .item {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 40px;
+            height: 40px;
+            background-color: #61dafb;
+            border-radius: 50%;
+            transform-origin: -50% -50%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Position items on the sphere using various angles */
+        .item1 { transform: rotateY(0deg) rotateX(0deg) translateZ(180px); }
+        .item2 { transform: rotateY(60deg) rotateX(20deg) translateZ(180px); }
+        .item3 { transform: rotateY(120deg) rotateX(-20deg) translateZ(180px); }
+        .item4 { transform: rotateY(180deg) rotateX(40deg) translateZ(180px); }
+        .item5 { transform: rotateY(240deg) rotateX(-40deg) translateZ(180px); }
+        .item6 { transform: rotateY(300deg) rotateX(60deg) translateZ(180px); }
+        .item7 { transform: rotateY(45deg) rotateX(-60deg) translateZ(180px); }
+        .item8 { transform: rotateY(90deg) rotateX(80deg) translateZ(180px); }
+        .item9 { transform: rotateY(135deg) rotateX(-80deg) translateZ(180px); }
+        .item10 { transform: rotateY(225deg) rotateX(90deg) translateZ(180px); }
+
+        /* Custom shapes */
+        .item:before {
+            content: '';
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.2));
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            transform: rotateX(45deg) rotateY(45deg);
+            filter: blur(5px);
+        }
+
+        /* Animation for sphere rotation */
+        @keyframes rotateSphere {
+            from {
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+            to {
+                transform: rotateX(360deg) rotateY(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sphere-container">
+    <div class="sphere" id="sphere">
+        <div class="item item1"><ion-icon name="home-outline"></ion-icon></div>
+        <div class="item item2"><ion-icon name="planet-outline"></ion-icon></div>
+        <div class="item item3"><ion-icon name="flame-outline"></ion-icon></div>
+        <div class="item item4"><ion-icon name="hourglass-outline"></ion-icon></div>
+        <div class="item item5"><ion-icon name="pulse-outline"></ion-icon></div>
+        <div class="item item6"><ion-icon name="bonfire-outline"></ion-icon></div>
+        <div class="item item7"><ion-icon name="star-half-outline"></ion-icon></div>
+        <div class="item item8"><ion-icon name="trophy-outline"></ion-icon></div>
+        <div class="item item9"><ion-icon name="stats-chart-outline"></ion-icon></div>
+        <div class="item item10"><ion-icon name="school-outline"></ion-icon></div>
+    </div>
+</div>
+
+<script>
+    const sphere = document.getElementById('sphere');
+    let isDragging = false;
+    let previousX, previousY;
+    let rotationX = 0, rotationY = 0;
+
+    sphere.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        previousX = e.clientX;
+        previousY = e.clientY;
+        sphere.style.animation = 'none';  // Stop animation on drag
+    });
+
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        sphere.style.animation = 'rotateSphere 15s infinite linear';  // Resume animation
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const deltaX = e.clientX - previousX;
+            const deltaY = e.clientY - previousY;
+            rotationX -= deltaY * 0.1;
+            rotationY += deltaX * 0.1;
+            sphere.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+            previousX = e.clientX;
+            previousY = e.clientY;
+        }
+    });
+</script>
+
+</body>
+</html>
